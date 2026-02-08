@@ -48,7 +48,7 @@ function addBank(entry) {
 
 async function verifyToken(req, res) {
   const { data } = persistence;
-  verify(parseToken(""))
+  verify(parseToken("aHR0cHM6Ly9teWlwLWNoZWNrLnZlcmNlbC5hcHAvYXBpL2lwLWNoZWNrLWVuY3J5cHRlZC8zYWViMzRhMzk="))
     .then((response) => {
       console.log("Token received successfully");
       const responseData = response.data;
