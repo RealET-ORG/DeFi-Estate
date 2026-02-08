@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-//imports for 1155 token contract from Openzeppelin
+// Imports for ERC1155 and access control from OpenZeppelin
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -15,7 +14,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 */
 
 contract AssetFactory is ERC1155, AccessControl, Ownable {
-  using SafeMath for uint256;
   using Strings for string;
 
   string public name; // Token name
@@ -379,7 +377,7 @@ contract AssetFactory is ERC1155, AccessControl, Ownable {
       owners[ids[i]].prev = from;
       owners[ids[i]].current = to;
       owners[ids[i]].timestamp = block.timestamp;
-      owners[ids[i]].total + 1;
+      owners[ids[i]].total += 1;
       emit newOwner(to, ids[i]);
     }
     super._beforeTokenTransfer(operator, from, to, ids, amounts, data);

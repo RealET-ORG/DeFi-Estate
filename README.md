@@ -36,6 +36,10 @@ A decentralized real estate platform built with React, Vite, and Web3 technologi
      ```
      VITE_ENABLE_TESTNETS=true
      ```
+   - After deploying `contracts/AssetFactory.sol`, set the contract address for the app to use:
+     ```
+     VITE_ASSET_FACTORY_ADDRESS=0xYourDeployedContractAddress
+     ```
 
 4. Start the development server:
    ```bash
