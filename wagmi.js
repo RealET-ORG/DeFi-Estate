@@ -8,9 +8,13 @@ import {
   sepolia,
 } from 'wagmi/chains';
 
+// Get WalletConnect project ID from environment variable or use a default
+// You can get a free project ID from https://cloud.walletconnect.com
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID';
+
 export const config = getDefaultConfig({
   appName: 'DeFi Real Estate',
-  projectId: 'YOUR_PROJECT_ID',
+  projectId: projectId,
   chains: [
     mainnet,
     polygon,

@@ -5,10 +5,11 @@ A decentralized real estate platform built with React, Vite, and Web3 technologi
 ## Features
 
 - Browse and explore real estate properties
-- Connect wallet using RainbowKit
+- **Wallet Integration**: Connect with MetaMask, WalletConnect, and other popular wallets via RainbowKit
 - Built with modern React and Vite
 - Styled with Tailwind CSS
 - Web3 integration with Wagmi and Viem
+- Support for multiple chains (Ethereum, Polygon, Optimism, Arbitrum, Base, and Sepolia testnet)
 
 ## Getting Started
 
@@ -25,12 +26,23 @@ A decentralized real estate platform built with React, Vite, and Web3 technologi
    npm install
    ```
 
-3. Start the development server:
+3. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add your WalletConnect Project ID (get a free one from https://cloud.walletconnect.com):
+     ```
+     VITE_WALLETCONNECT_PROJECT_ID=your_project_id_here
+     ```
+   - Optionally enable testnets:
+     ```
+     VITE_ENABLE_TESTNETS=true
+     ```
+
+4. Start the development server:
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Available Scripts
 

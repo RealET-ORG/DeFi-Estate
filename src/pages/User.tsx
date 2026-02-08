@@ -6,223 +6,140 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { useWallet } from '../context/WalletContext';
 import { userPortfolio } from '../utils/mockData';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function User() {
-  const { isConnected, address, disconnectWallet } = useWallet();
+  const { isConnected, address } = useWallet();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('portfolio');
-  
+
   const tabs = [
-    {
-      id: 'portfolio',
-      label: 'My Portfolio',
-      icon: <BuildingIcon size={16} />
-    },
-    {
-      id: 'transactions',
-      label: 'Transactions',
-      icon: <HistoryIcon size={16} />
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: <SettingsIcon size={16} />
-    }
+    { id: 'portfolio', label: 'My Portfolio', icon: <BuildingIcon size={18} /> },
+    { id: 'transactions', label: 'Transactions', icon: <HistoryIcon size={18} /> },
+    { id: 'settings', label: 'Settings', icon: <SettingsIcon size={18} /> },
   ];
 
-  // Mock transactions
   const transactions = [
-    {
-      id: 1,
-      type: 'purchase',
-      property: 'Luxury Downtown Apartment',
-      tokens: 2,
-      value: 1.0,
-      date: '2023-06-15'
-    },
-    {
-      id: 2,
-      type: 'purchase',
-      property: 'Beachfront Villa',
-      tokens: 1,
-      value: 1.2,
-      date: '2023-05-22'
-    },
-    {
-      id: 3,
-      type: 'dividend',
-      property: 'Luxury Downtown Apartment',
-      tokens: 0,
-      value: 0.05,
-      date: '2023-04-01'
-    },
-    {
-      id: 4,
-      type: 'purchase',
-      property: 'Urban Retail Space',
-      tokens: 1,
-      value: 0.67,
-      date: '2023-03-10'
-    }
+    { id: 1, type: 'purchase', property: 'Luxury Downtown Apartment', tokens: 2, value: 1.0, date: '2023-06-15' },
+    { id: 2, type: 'purchase', property: 'Beachfront Villa', tokens: 1, value: 1.2, date: '2023-05-22' },
+    { id: 3, type: 'dividend', property: 'Luxury Downtown Apartment', tokens: 0, value: 0.05, date: '2023-04-01' },
+    { id: 4, type: 'purchase', property: 'Urban Retail Space', tokens: 1, value: 0.67, date: '2023-03-10' },
   ];
 
   if (!isConnected) {
     return (
-      <div className="bg-gray-900 min-h-screen w-full flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-gray-800 rounded-xl border border-gray-700">
-          <WalletIcon size={48} className="mx-auto text-indigo-400 mb-4" />
-          <h2 className="text-2xl font-semibold text-white mb-4">
-            Wallet Not Connected
+      <div className="min-h-screen w-full flex items-center justify-center px-4">
+        <div className="text-center max-w-md w-full p-10 rounded-2xl border border-void-700 bg-void-800/80">
+          <div className="w-16 h-16 rounded-2xl bg-accent-muted border border-accent/20 flex items-center justify-center mx-auto mb-6">
+            <WalletIcon size={32} className="text-accent" />
+          </div>
+          <h2 className="font-display text-2xl font-semibold text-cream-100 mb-3">
+            Wallet not connected
           </h2>
-          <p className="text-gray-300 mb-6">
-            Please connect your wallet to access your dashboard and portfolio.
+          <p className="text-cream-400 mb-8">
+            Connect your wallet to access your dashboard and portfolio.
           </p>
-          <Button onClick={() => navigate('/')}>Back to Home</Button>
+          <div className="flex justify-center [&_button]:!bg-accent [&_button]:!text-void-950 [&_button]:!rounded-lg">
+            <ConnectButton />
+          </div>
+          <Button variant="ghost" className="mt-4" onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-900 min-h-screen w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div className="min-h-screen w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-2">
                 My Dashboard
               </h1>
-              <div className="flex items-center text-gray-400">
-                <span className="bg-gray-800 rounded-full px-3 py-1 text-sm border border-gray-700">
-                  {address?.substring(0, 6)}...
-                  {address?.substring(address.length - 4)}
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1.5 rounded-lg bg-void-700 border border-void-600 text-cream-300 text-sm font-mono">
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
                 </span>
               </div>
             </div>
-            <div className="mt-4 md:mt-0">
-              <Button variant="outline" icon={<LogOutIcon size={16} />} onClick={disconnectWallet}>
+            <div className="flex gap-2 [&_button]:!rounded-lg">
+              <ConnectButton />
+              <Button variant="outline" icon={<LogOutIcon size={18} />} onClick={() => {}}>
                 Disconnect
               </Button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.1 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <BuildingIcon size={16} className="mr-2" />
-                <span>Properties Owned</span>
-              </div>
-              <div className="text-3xl font-bold text-white">
-                {userPortfolio.totalProperties}
-              </div>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.2 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <CoinsIcon size={16} className="mr-2" />
-                <span>Total Invested</span>
-              </div>
-              <div className="text-3xl font-bold text-indigo-400">
-                {userPortfolio.totalInvested} ETH
-              </div>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.3 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <HistoryIcon size={16} className="mr-2" />
-                <span>Last Transaction</span>
-              </div>
-              <div className="text-xl font-semibold text-white">3 days ago</div>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              { icon: BuildingIcon, label: 'Properties owned', value: userPortfolio.totalProperties },
+              { icon: CoinsIcon, label: 'Total invested', value: `${userPortfolio.totalInvested} ETH`, accent: true },
+              { icon: HistoryIcon, label: 'Last activity', value: '3 days ago' },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="p-6 rounded-2xl border border-void-700 bg-void-800/60"
+              >
+                <div className="flex items-center gap-2 text-cream-400 text-sm mb-2">
+                  <stat.icon size={16} />
+                  {stat.label}
+                </div>
+                <div className={`font-display text-2xl font-bold ${stat.accent ? 'text-accent' : 'text-cream-100'}`}>
+                  {stat.value}
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-            <div className="border-b border-gray-700">
-              <nav className="flex">
-                {tabs.map(tab => (
-                  <button 
-                    key={tab.id} 
-                    onClick={() => setActiveTab(tab.id)} 
-                    className={`px-6 py-4 flex items-center text-sm font-medium ${
-                      activeTab === tab.id 
-                        ? 'border-b-2 border-indigo-500 text-indigo-400' 
-                        : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
-                  </button>
-                ))}
-              </nav>
-            </div>
+          <div className="rounded-2xl border border-void-700 bg-void-800/40 overflow-hidden">
+            <nav className="flex border-b border-void-700">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-6 py-4 flex items-center gap-2 text-sm font-medium transition-colors ${
+                    activeTab === tab.id
+                      ? 'text-accent border-b-2 border-accent bg-accent-muted/30'
+                      : 'text-cream-400 hover:text-cream-100'
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
             <div className="p-6">
               {activeTab === 'portfolio' && (
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-6">
-                    My Properties
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-700">
+                  <h3 className="font-display text-lg font-semibold text-cream-100 mb-6">My properties</h3>
+                  <div className="overflow-x-auto rounded-xl border border-void-700">
+                    <table className="min-w-full">
                       <thead>
-                        <tr>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Property
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Tokens Owned
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Value
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Actions
-                          </th>
+                        <tr className="border-b border-void-700">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Property</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Tokens</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Value</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-cream-400 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-800 divide-y divide-gray-700">
-                        {userPortfolio.properties.map(property => (
-                          <motion.tr 
-                            key={property.propertyId} 
-                            initial={{ opacity: 0 }} 
-                            animate={{ opacity: 1 }} 
-                            transition={{ duration: 0.3 }}
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="font-medium text-white">
-                                {property.propertyName}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-gray-300">
-                              {property.tokensOwned}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-indigo-400">
-                                {property.investmentValue} ETH
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <Button variant="outline" size="sm" onClick={() => navigate(`/property/${property.propertyId}`)}>
+                      <tbody className="divide-y divide-void-700">
+                        {userPortfolio.properties.map((p) => (
+                          <tr key={p.propertyId} className="hover:bg-void-700/30 transition-colors">
+                            <td className="px-6 py-4 text-cream-100 font-medium">{p.propertyName}</td>
+                            <td className="px-6 py-4 text-cream-400">{p.tokensOwned}</td>
+                            <td className="px-6 py-4 text-accent">{p.investmentValue} ETH</td>
+                            <td className="px-6 py-4 text-right">
+                              <Button variant="outline" size="sm" onClick={() => navigate(`/property/${p.propertyId}`)}>
                                 View
                               </Button>
                             </td>
-                          </motion.tr>
+                          </tr>
                         ))}
                       </tbody>
                     </table>
@@ -231,51 +148,27 @@ export default function User() {
               )}
               {activeTab === 'transactions' && (
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-6">
-                    Transaction History
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-700">
+                  <h3 className="font-display text-lg font-semibold text-cream-100 mb-6">Transaction history</h3>
+                  <div className="overflow-x-auto rounded-xl border border-void-700">
+                    <table className="min-w-full">
                       <thead>
-                        <tr>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Type
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Property
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Amount
-                          </th>
+                        <tr className="border-b border-void-700">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Date</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Type</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Property</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Amount</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-800 divide-y divide-gray-700">
-                        {transactions.map(tx => (
-                          <motion.tr 
-                            key={tx.id} 
-                            initial={{ opacity: 0 }} 
-                            animate={{ opacity: 1 }} 
-                            transition={{ duration: 0.3 }}
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap text-gray-300">
-                              {tx.date}
+                      <tbody className="divide-y divide-void-700">
+                        {transactions.map((tx) => (
+                          <tr key={tx.id} className="hover:bg-void-700/30 transition-colors">
+                            <td className="px-6 py-4 text-cream-400">{tx.date}</td>
+                            <td className="px-6 py-4">
+                              <Badge color={tx.type === 'purchase' ? 'accent' : 'green'}>{tx.type === 'purchase' ? 'Purchase' : 'Dividend'}</Badge>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <Badge color={tx.type === 'purchase' ? 'blue' : 'green'}>
-                                {tx.type === 'purchase' ? 'Purchase' : 'Dividend'}
-                              </Badge>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-white">
-                              {tx.property}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-indigo-400">
-                              {tx.value} ETH{' '}
-                              {tx.tokens > 0 && `(${tx.tokens} tokens)`}
-                            </td>
-                          </motion.tr>
+                            <td className="px-6 py-4 text-cream-100">{tx.property}</td>
+                            <td className="px-6 py-4 text-accent">{tx.value} ETH {tx.tokens > 0 && `(${tx.tokens} tokens)`}</td>
+                          </tr>
                         ))}
                       </tbody>
                     </table>
@@ -284,57 +177,34 @@ export default function User() {
               )}
               {activeTab === 'settings' && (
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-6">
-                    Account Settings
-                  </h3>
-                  <div className="space-y-6">
+                  <h3 className="font-display text-lg font-semibold text-cream-100 mb-6">Account settings</h3>
+                  <div className="space-y-6 max-w-lg">
                     <div>
-                      <h4 className="text-white font-medium mb-2">
-                        Notification Preferences
-                      </h4>
+                      <h4 className="text-cream-100 font-medium mb-3">Notifications</h4>
                       <div className="space-y-2">
-                        <div className="flex items-center">
-                          <input id="email-notifications" type="checkbox" defaultChecked className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded" />
-                          <label htmlFor="email-notifications" className="ml-2 text-gray-300">
-                            Email notifications for new properties
-                          </label>
-                        </div>
-                        <div className="flex items-center">
-                          <input id="dividend-notifications" type="checkbox" defaultChecked className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded" />
-                          <label htmlFor="dividend-notifications" className="ml-2 text-gray-300">
-                            Dividend payment notifications
-                          </label>
-                        </div>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input type="checkbox" defaultChecked className="rounded border-void-600 bg-void-700 text-accent focus:ring-accent/50" />
+                          <span className="text-cream-400">New properties</span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input type="checkbox" defaultChecked className="rounded border-void-600 bg-void-700 text-accent focus:ring-accent/50" />
+                          <span className="text-cream-400">Dividend payments</span>
+                        </label>
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-white font-medium mb-2">
-                        Connected Wallet
-                      </h4>
-                      <div className="bg-gray-700 p-4 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" className="w-8 h-8 mr-3" />
-                            <div>
-                              <div className="text-white font-medium">
-                                MetaMask
-                              </div>
-                              <div className="text-gray-400 text-sm">
-                                {address}
-                              </div>
-                            </div>
+                      <h4 className="text-cream-100 font-medium mb-2">Connected wallet</h4>
+                      <div className="p-4 rounded-xl bg-void-700/50 border border-void-600">
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <div className="text-cream-100 font-medium">Wallet</div>
+                            <div className="text-cream-400 text-sm font-mono truncate">{address}</div>
                           </div>
-                          <Button variant="outline" size="sm" onClick={disconnectWallet}>
-                            Disconnect
-                          </Button>
+                          <ConnectButton />
                         </div>
                       </div>
                     </div>
-                    <div className="pt-4">
-                      <Button variant="secondary" fullWidth>
-                        Save Settings
-                      </Button>
-                    </div>
+                    <Button>Save settings</Button>
                   </div>
                 </div>
               )}

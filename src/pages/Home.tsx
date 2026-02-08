@@ -7,35 +7,45 @@ import { PropertyCard } from '../components/ui/PropertyCard';
 import { properties } from '../utils/mockData';
 
 export default function Home() {
-  // Only get the first 3 properties for featured section
   const featuredProperties = properties.slice(0, 3);
   const navigate = useNavigate();
-  
+
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative bg-gray-900 overflow-hidden">
+      {/* Hero */}
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="Real Estate" className="w-full h-full object-cover opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 to-gray-900"></div>
+          <img
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1473&q=80"
+            alt=""
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-void-950/60 via-void-950/80 to-void-950" />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.6 }} 
-            className="text-center max-w-3xl mx-auto"
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-4xl"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Invest in Real Estate with{' '}
-              <span className="text-indigo-400">Blockchain</span> Technology
-            </h1>
-            <p className="text-xl text-gray-300 mb-8">
-              Own fractions of premium properties with full transparency,
-              liquidity, and security provided by blockchain technology.
+            <p className="font-display text-accent font-semibold text-sm uppercase tracking-widest mb-6">
+              Tokenized Real Estate
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" onClick={() => navigate('/browse')}>
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-cream-100 leading-[1.1] tracking-tight mb-6">
+              Own fractions of
+              <br />
+              <span className="text-accent">premium properties</span>
+              <br />
+              on-chain.
+            </h1>
+            <p className="text-lg sm:text-xl text-cream-300 max-w-xl mb-10 leading-relaxed">
+              Full transparency, liquidity, and security. Invest in real estate with
+              as little as one token—powered by blockchain.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button size="lg" onClick={() => navigate('/browse')} icon={<ArrowRightIcon size={20} />}>
                 Explore Properties
               </Button>
               <Button size="lg" variant="outline" onClick={() => navigate('/about')}>
@@ -46,25 +56,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Properties */}
-      <section className="bg-gray-900 py-16">
+      {/* Featured */}
+      <section className="relative py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl font-bold text-white">
-              Featured Properties
-            </h2>
-            <Link to="/browse" className="text-indigo-400 hover:text-indigo-300 flex items-center">
-              View All
-              <ArrowRightIcon size={16} className="ml-2" />
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-14">
+            <div>
+              <p className="font-display text-accent text-sm uppercase tracking-widest mb-2">
+                Curated
+              </p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-cream-100">
+                Featured Properties
+              </h2>
+            </div>
+            <Link
+              to="/browse"
+              className="group inline-flex items-center gap-2 text-accent hover:text-accent-light font-medium text-sm transition-colors"
+            >
+              View all
+              <ArrowRightIcon size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProperties.map((property, index) => (
-              <motion.div 
-                key={property.id} 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+              <motion.div
+                key={property.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <PropertyCard property={property} />
               </motion.div>
@@ -73,103 +93,96 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="bg-gray-800 py-16">
+      {/* How it works */}
+      <section className="relative py-24 md:py-32 border-y border-void-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.6 }} 
-            viewport={{ once: true }} 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">How It Works</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              DeFi Estates makes real estate investment accessible, transparent,
-              and liquid through blockchain technology.
+            <p className="font-display text-accent text-sm uppercase tracking-widest mb-2">
+              Process
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-4">
+              How It Works
+            </h2>
+            <p className="text-cream-400 text-lg max-w-2xl mx-auto">
+              DeFi Estates makes real estate investment accessible and liquid through
+              blockchain technology.
             </p>
           </motion.div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.1 }} 
-              viewport={{ once: true }} 
-              className="bg-gray-700 p-8 rounded-xl"
-            >
-              <div className="bg-indigo-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <BuildingIcon size={32} className="text-indigo-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Property Tokenization
-              </h3>
-              <p className="text-gray-300">
-                Premium properties are selected, verified, and tokenized into
-                smart contracts, allowing fractional ownership.
-              </p>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.2 }} 
-              viewport={{ once: true }} 
-              className="bg-gray-700 p-8 rounded-xl"
-            >
-              <div className="bg-indigo-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <CoinsIcon size={32} className="text-indigo-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Investment & Returns
-              </h3>
-              <p className="text-gray-300">
-                Buy property tokens using cryptocurrency and earn returns from
-                rental income and property appreciation.
-              </p>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.3 }} 
-              viewport={{ once: true }} 
-              className="bg-gray-700 p-8 rounded-xl"
-            >
-              <div className="bg-indigo-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <ShieldIcon size={32} className="text-indigo-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Security & Transparency
-              </h3>
-              <p className="text-gray-300">
-                All transactions and ownership records are secured on the
-                blockchain, providing full transparency and security.
-              </p>
-            </motion.div>
+            {[
+              {
+                icon: BuildingIcon,
+                title: 'Property Tokenization',
+                description:
+                  'Premium properties are verified and tokenized into smart contracts for fractional ownership.',
+              },
+              {
+                icon: CoinsIcon,
+                title: 'Invest & Earn',
+                description:
+                  'Buy tokens with crypto and earn returns from rental income and appreciation.',
+              },
+              {
+                icon: ShieldIcon,
+                title: 'Security & Transparency',
+                description:
+                  'All transactions and ownership are on-chain—fully transparent and secure.',
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative p-8 rounded-2xl bg-void-800/60 border border-void-700 hover:border-void-600 transition-colors group"
+              >
+                <div className="w-14 h-14 rounded-xl bg-accent-muted border border-accent/20 flex items-center justify-center mb-6 group-hover:shadow-glow-sm transition-shadow">
+                  <item.icon size={28} className="text-accent" strokeWidth={1.5} />
+                </div>
+                <h3 className="font-display text-xl font-semibold text-cream-100 mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-cream-400 leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-indigo-900 py-16">
+      {/* CTA */}
+      <section className="relative py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="mb-8 md:mb-0 md:mr-8">
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Ready to Start Investing?
-              </h2>
-              <p className="text-xl text-indigo-200">
-                Join thousands of investors already building their real estate
-                portfolio with DeFi Estates.
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative rounded-3xl overflow-hidden border border-void-700 bg-void-800/80 p-12 md:p-16 lg:p-20"
+          >
+            <div className="absolute inset-0 bg-accent/[0.04]" />
+            <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-4">
+                  Ready to start investing?
+                </h2>
+                <p className="text-cream-400 text-lg max-w-xl">
+                  Join investors building real estate portfolios with DeFi Estates.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
+                <Button size="lg">Connect Wallet</Button>
+                <Button size="lg" variant="outline" onClick={() => navigate('/about')}>
+                  Learn more
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" onClick={() => {}}>
-                Connect Wallet
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => {}}>
-                Learn More
-              </Button>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

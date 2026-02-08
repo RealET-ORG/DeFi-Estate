@@ -1,4 +1,6 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useAccount, useDisconnect } from 'wagmi';
+
 type WalletContextType = {
   isConnected: boolean;
   address: string | null;
@@ -6,37 +8,63 @@ type WalletContextType = {
   connectWallet: () => void;
   disconnectWallet: () => void;
 };
+
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+// List of admin addresses (can be moved to environment variables or fetched from contract)
+const ADMIN_ADDRESSES: string[] = [
+  // Add admin addresses here, e.g.:
+  // '0x1234567890123456789012345678901234567890',
+  // '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
+];
+
 export function WalletProvider({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const [isConnected, setIsConnected] = useState(false);
-  const [address, setAddress] = useState<string | null>(null);
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check if connected address is an admin
+  useEffect(() => {
+    if (address && isConnected) {
+      const normalizedAddress = address.toLowerCase();
+      setIsAdmin(ADMIN_ADDRESSES.some(admin => admin.toLowerCase() === normalizedAddress));
+    } else {
+      setIsAdmin(false);
+    }
+  }, [address, isConnected]);
+
   const connectWallet = () => {
-    // Mock wallet connection
-    setIsConnected(true);
-    setAddress('0x1234...5678');
-    // Check if admin (would be verified through proper authentication)
-    setIsAdmin(Math.random() > 0.8); // 20% chance of being admin for demo
+    // This function is kept for compatibility but actual connection
+    // is handled by RainbowKit's ConnectButton component
+    // The wallet connection will be triggered by the ConnectButton
   };
+
   const disconnectWallet = () => {
-    setIsConnected(false);
-    setAddress(null);
-    setIsAdmin(false);
+    disconnect();
   };
-  return <WalletContext.Provider value={{
-    isConnected,
-    address,
-    isAdmin,
-    connectWallet,
-    disconnectWallet
-  }}>
+
+  const value = useMemo(
+    () => ({
+      isConnected: isConnected ?? false,
+      address: address ?? null,
+      isAdmin,
+      connectWallet,
+      disconnectWallet,
+    }),
+    [isConnected, address, isAdmin, disconnect]
+  );
+
+  return (
+    <WalletContext.Provider value={value}>
       {children}
-    </WalletContext.Provider>;
+    </WalletContext.Provider>
+  );
 }
+
 export const useWallet = () => {
   const context = useContext(WalletContext);
   if (context === undefined) {

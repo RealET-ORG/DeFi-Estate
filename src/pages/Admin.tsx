@@ -66,13 +66,15 @@ export default function Admin() {
 
   if (!isConnected || !isAdmin) {
     return (
-      <div className="bg-gray-900 min-h-screen w-full flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-gray-800 rounded-xl border border-gray-700">
-          <ShieldIcon size={48} className="mx-auto text-indigo-400 mb-4" />
-          <h2 className="text-2xl font-semibold text-white mb-4">
-            Admin Access Required
+      <div className="min-h-screen w-full flex items-center justify-center px-4">
+        <div className="text-center max-w-md w-full p-10 rounded-2xl border border-void-700 bg-void-800/80">
+          <div className="w-16 h-16 rounded-2xl bg-accent-muted border border-accent/20 flex items-center justify-center mx-auto mb-6">
+            <ShieldIcon size={32} className="text-accent" />
+          </div>
+          <h2 className="font-display text-2xl font-semibold text-cream-100 mb-3">
+            Admin access required
           </h2>
-          <p className="text-gray-300 mb-6">
+          <p className="text-cream-400 mb-8">
             You need admin privileges to access this dashboard.
           </p>
           <Button onClick={() => navigate('/')}>Back to Home</Button>
@@ -82,157 +84,96 @@ export default function Admin() {
   }
 
   return (
-    <div className="bg-gray-900 min-h-screen w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div className="min-h-screen w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-2">
                 Admin Dashboard
               </h1>
-              <p className="text-gray-400">
-                Manage properties, contracts, and platform settings
-              </p>
+              <p className="text-cream-400">Manage properties, contracts, and settings</p>
             </div>
-            <div className="mt-4 md:mt-0">
-              <Button icon={<PlusIcon size={16} />}>Add New Property</Button>
-            </div>
+            <Button icon={<PlusIcon size={18} />}>Add property</Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.1 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <BuildingIcon size={16} className="mr-2" />
-                <span>Total Properties</span>
-              </div>
-              <div className="text-3xl font-bold text-white">
-                {properties.length}
-              </div>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.2 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <CoinsIcon size={16} className="mr-2" />
-                <span>Active Contracts</span>
-              </div>
-              <div className="text-3xl font-bold text-indigo-400">
-                {contractDeployments.length}
-              </div>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.4, delay: 0.3 }} 
-              className="bg-gray-800 rounded-xl border border-gray-700 p-6"
-            >
-              <div className="flex items-center text-gray-400 mb-2">
-                <span>Total Sales</span>
-              </div>
-              <div className="text-3xl font-bold text-green-400">5.67 ETH</div>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              { icon: BuildingIcon, label: 'Total properties', value: properties.length },
+              { icon: CoinsIcon, label: 'Active contracts', value: contractDeployments.length, accent: true },
+              { label: 'Total sales', value: '5.67 ETH', green: true },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="p-6 rounded-2xl border border-void-700 bg-void-800/60"
+              >
+                <div className="flex items-center gap-2 text-cream-400 text-sm mb-2">
+                  {stat.icon && <stat.icon size={16} />}
+                  {stat.label}
+                </div>
+                <div className={`font-display text-2xl font-bold ${stat.accent ? 'text-accent' : stat.green ? 'text-emerald-400' : 'text-cream-100'}`}>
+                  {stat.value}
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-            <div className="border-b border-gray-700">
-              <nav className="flex">
-                {tabs.map(tab => (
-                  <button 
-                    key={tab.id} 
-                    onClick={() => setActiveTab(tab.id)} 
-                    className={`px-6 py-4 flex items-center text-sm font-medium ${
-                      activeTab === tab.id 
-                        ? 'border-b-2 border-indigo-500 text-indigo-400' 
-                        : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
-                  </button>
-                ))}
-              </nav>
-            </div>
+          <div className="rounded-2xl border border-void-700 bg-void-800/40 overflow-hidden">
+            <nav className="flex border-b border-void-700">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-6 py-4 flex items-center gap-2 text-sm font-medium transition-colors ${
+                    activeTab === tab.id ? 'border-b-2 border-accent text-accent bg-accent-muted/30' : 'text-cream-400 hover:text-cream-100'
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
             <div className="p-6">
               {activeTab === 'properties' && (
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-6">
-                    Manage Properties
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-700">
+                  <h3 className="font-display text-lg font-semibold text-cream-100 mb-6">Manage properties</h3>
+                  <div className="overflow-x-auto rounded-xl border border-void-700">
+                    <table className="min-w-full">
                       <thead>
-                        <tr>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Property
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Location
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Price
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Actions
-                          </th>
+                        <tr className="border-b border-void-700">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Property</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Location</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Status</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Price</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-cream-400 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-800 divide-y divide-gray-700">
-                        {properties.map(property => (
-                          <motion.tr 
-                            key={property.id} 
-                            initial={{ opacity: 0 }} 
-                            animate={{ opacity: 1 }} 
-                            transition={{ duration: 0.3 }}
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
-                                <div className="h-10 w-10 rounded overflow-hidden flex-shrink-0">
-                                  <img src={property.imageUrl} alt={property.title} className="h-full w-full object-cover" />
+                      <tbody className="divide-y divide-void-700">
+                        {properties.map((p) => (
+                          <tr key={p.id} className="hover:bg-void-700/30 transition-colors">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 rounded-lg overflow-hidden flex-shrink-0">
+                                  <img src={p.imageUrl} alt={p.title} className="h-full w-full object-cover" />
                                 </div>
-                                <div className="ml-4">
-                                  <div className="font-medium text-white">
-                                    {property.title}
-                                  </div>
-                                </div>
+                                <span className="font-medium text-cream-100">{p.title}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-gray-300">
-                              {property.location}
+                            <td className="px-6 py-4 text-cream-400">{p.location}</td>
+                            <td className="px-6 py-4">
+                              <Badge color={p.status === 'Available' ? 'green' : p.status === 'Sold Out' ? 'red' : 'yellow'}>{p.status}</Badge>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <Badge color={property.status === 'Available' ? 'green' : property.status === 'Sold Out' ? 'red' : 'yellow'}>
-                                {property.status}
-                              </Badge>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-indigo-400">
-                              {property.tokenPrice} ETH
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <div className="flex justify-end space-x-2">
-                                <Button variant="outline" size="sm" icon={<EditIcon size={14} />}>
-                                  Edit
-                                </Button>
-                                <Button variant="danger" size="sm" icon={<TrashIcon size={14} />}>
-                                  Delete
-                                </Button>
+                            <td className="px-6 py-4 text-accent">{p.tokenPrice} ETH</td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button variant="outline" size="sm" icon={<EditIcon size={14} />}>Edit</Button>
+                                <Button variant="danger" size="sm" icon={<TrashIcon size={14} />}>Delete</Button>
                               </div>
                             </td>
-                          </motion.tr>
+                          </tr>
                         ))}
                       </tbody>
                     </table>
@@ -241,58 +182,29 @@ export default function Admin() {
               )}
               {activeTab === 'contracts' && (
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-6">
-                    Contract Deployments
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-700">
+                  <h3 className="font-display text-lg font-semibold text-cream-100 mb-6">Contract deployments</h3>
+                  <div className="overflow-x-auto rounded-xl border border-void-700">
+                    <table className="min-w-full">
                       <thead>
-                        <tr>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Property
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Contract Address
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Deployment Date
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-6 py-3 bg-gray-700 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            Actions
-                          </th>
+                        <tr className="border-b border-void-700">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Property</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Contract</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Date</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-cream-400 uppercase tracking-wider">Status</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-cream-400 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-800 divide-y divide-gray-700">
-                        {contractDeployments.map(contract => (
-                          <motion.tr 
-                            key={contract.id} 
-                            initial={{ opacity: 0 }} 
-                            animate={{ opacity: 1 }} 
-                            transition={{ duration: 0.3 }}
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap text-white">
-                              {contract.name}
+                      <tbody className="divide-y divide-void-700">
+                        {contractDeployments.map((c) => (
+                          <tr key={c.id} className="hover:bg-void-700/30 transition-colors">
+                            <td className="px-6 py-4 text-cream-100">{c.name}</td>
+                            <td className="px-6 py-4 text-accent font-mono text-sm">{c.address}</td>
+                            <td className="px-6 py-4 text-cream-400">{c.date}</td>
+                            <td className="px-6 py-4"><Badge color="green">{c.status}</Badge></td>
+                            <td className="px-6 py-4 text-right">
+                              <Button variant="outline" size="sm">View on Etherscan</Button>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="text-indigo-400 font-mono">
-                                {contract.address}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-gray-300">
-                              {contract.date}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <Badge color="green">{contract.status}</Badge>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <Button variant="outline" size="sm">
-                                View on Etherscan
-                              </Button>
-                            </td>
-                          </motion.tr>
+                          </tr>
                         ))}
                       </tbody>
                     </table>
