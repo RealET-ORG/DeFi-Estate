@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ArrowRightIcon, BuildingIcon, CoinsIcon, ShieldIcon } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { PropertyCard } from '../components/ui/PropertyCard';
@@ -176,7 +177,9 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
-                <Button size="lg">Connect Wallet</Button>
+                <div className="[&_button]:!bg-accent [&_button]:!text-void-950 [&_button]:!rounded-lg [&_button]:min-h-[48px] [&_button]:px-8">
+                  <ConnectButton />
+                </div>
                 <Button size="lg" variant="outline" onClick={() => navigate('/about')}>
                   Learn more
                 </Button>

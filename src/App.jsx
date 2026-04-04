@@ -14,6 +14,7 @@ import Browse from './pages/Browse';
 import Admin from './pages/Admin';
 import User from './pages/User';
 import PropertyDetail from './pages/PropertyDetail';
+import { WalletGate } from './components/WalletGate';
 
 const client = new QueryClient();
 
@@ -23,17 +24,19 @@ function App() {
         <QueryClientProvider client={client}>
           <RainbowKitProvider>
             <WalletProvider>
-              <Layout>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/browse" element={<Browse />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/user" element={<User />} />
-                  <Route path="/property/:id" element={<PropertyDetail />} />
-                </Routes>
-              </Layout>
+              <WalletGate>
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/browse" element={<Browse />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/user" element={<User />} />
+                    <Route path="/property/:id" element={<PropertyDetail />} />
+                  </Routes>
+                </Layout>
+              </WalletGate>
             </WalletProvider>
           </RainbowKitProvider>
         </QueryClientProvider>

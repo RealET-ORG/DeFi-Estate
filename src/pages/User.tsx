@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { WalletIcon, CoinsIcon, HistoryIcon, BuildingIcon, SettingsIcon, LogOutIcon } from 'lucide-react';
+import { CoinsIcon, HistoryIcon, BuildingIcon, SettingsIcon, LogOutIcon } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { useWallet } from '../context/WalletContext';
@@ -9,7 +9,7 @@ import { userPortfolio } from '../utils/mockData';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function User() {
-  const { isConnected, address } = useWallet();
+  const { address, disconnectWallet } = useWallet();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('portfolio');
 
@@ -25,30 +25,6 @@ export default function User() {
     { id: 3, type: 'dividend', property: 'Luxury Downtown Apartment', tokens: 0, value: 0.05, date: '2023-04-01' },
     { id: 4, type: 'purchase', property: 'Urban Retail Space', tokens: 1, value: 0.67, date: '2023-03-10' },
   ];
-
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center px-4">
-        <div className="text-center max-w-md w-full p-10 rounded-2xl border border-void-700 bg-void-800/80">
-          <div className="w-16 h-16 rounded-2xl bg-accent-muted border border-accent/20 flex items-center justify-center mx-auto mb-6">
-            <WalletIcon size={32} className="text-accent" />
-          </div>
-          <h2 className="font-display text-2xl font-semibold text-cream-100 mb-3">
-            Wallet not connected
-          </h2>
-          <p className="text-cream-400 mb-8">
-            Connect your wallet to access your dashboard and portfolio.
-          </p>
-          <div className="flex justify-center [&_button]:!bg-accent [&_button]:!text-void-950 [&_button]:!rounded-lg">
-            <ConnectButton />
-          </div>
-          <Button variant="ghost" className="mt-4" onClick={() => navigate('/')}>
-            Back to Home
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen w-full">
@@ -67,7 +43,7 @@ export default function User() {
             </div>
             <div className="flex gap-2 [&_button]:!rounded-lg">
               <ConnectButton />
-              <Button variant="outline" icon={<LogOutIcon size={18} />} onClick={() => {}}>
+              <Button variant="outline" icon={<LogOutIcon size={18} />} onClick={() => disconnectWallet()}>
                 Disconnect
               </Button>
             </div>
